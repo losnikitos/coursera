@@ -7,29 +7,22 @@ def heap(items):
     swaps = []
 
     def swap(i, j):
-        # print 'swapp', (items[i], items[j])
         swaps.append((i, j))
         items[i], items[j] = items[j], items[i]
 
     def siftDown(i):
-
-        # print 'sift[', i, ']', items[i]
-
         left = i * 2 + 1
         right = i * 2 + 2
         hasLeft = i * 2 + 1 < len(items)
         hasRight = i * 2 + 2 < len(items)
         min = i
 
-        # print 'l?', hasLeft, 'r?', hasRight
         if hasLeft:
             if items[left] < items[min]:
-                # print 'left is less:', items[left], '<', items[min]
                 min = left
 
         if hasRight:
             if items[right] < items[min]:
-                # print 'right is less:', items[right], '<', items[min]
                 min = right
 
         if min != i:
@@ -38,12 +31,10 @@ def heap(items):
 
     h = int(math.log(len(items), 2))
     end = 2 ** h - 2
-    # print 'End of last full level', end
 
     for i in range(end, -1, -1):
         siftDown(i)
 
-    # print 'swapped', items
     return swaps
 
 
@@ -60,7 +51,9 @@ def heap(items):
 
 elementsCount = sys.stdin.readline()
 elements = [int(item) for item in sys.stdin.readline().split()]
+
 swaps = heap(elements)
+
 print(len(swaps))
 for swap in swaps:
     print swap[0], swap[1]
