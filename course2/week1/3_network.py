@@ -26,7 +26,7 @@ def process(maxBuffer, packets):
 
 def test(bufferSize, packets, expected):
     res = process(bufferSize, packets)
-    print 'ok' if res == expected else 'wrong: %s instead of %s' % (res, expected)
+    print('ok' if res == expected else 'wrong: %s instead of %s' % (res, expected))
 
 
 test(1, [], [])

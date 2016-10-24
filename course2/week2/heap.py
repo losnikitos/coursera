@@ -1,4 +1,4 @@
-# python2
+# python3
 
 import sys, math
 
@@ -56,4 +56,4 @@ swaps = heap(elements)
 
 print(len(swaps))
 for swap in swaps:
-    print swap[0], swap[1]
+    print(swap[0], swap[1])

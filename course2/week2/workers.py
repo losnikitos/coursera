@@ -60,10 +60,10 @@ def process(workerCount, tasks):
     heap = Heap()
     starts = []
 
-    for worker in xrange(workerCount):
+    for worker in range(workerCount):
         heap.push((0, worker))
 
-    for taskIndex, task in enumerate(tasks):
+    for task in tasks:
         time, worker = heap.pop()
         finishTime = time + task
         # print 'time', time, 'worker', worker, 'finished. Next task will finish at', finishTime
@@ -103,4 +103,4 @@ tasks = [int(item) for item in sys.stdin.readline().split()]
 starts = process(workersCount, tasks)
 
 for start in starts:
-    print start[0], start[1]
+    print(start[0], start[1])
