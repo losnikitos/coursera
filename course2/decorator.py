@@ -11,7 +11,7 @@ def multiply(times):
 
 @multiply(10)
 def log():
-    print 'hi'
+    print('hi')
 
 
 log()
