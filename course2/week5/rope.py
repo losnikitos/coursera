@@ -2,6 +2,7 @@
 
 from sys import stdin
 
+DEBUG = False
 
 # Splay tree implementation
 
@@ -18,12 +19,13 @@ def shift(node, offset):
     if node is None:
         return
 
-    node.key += offset
-
-    if node.left:
-        shift(node.left, offset)
-    if node.right:
-        shift(node.right, offset)
+    queue = [node]
+    while len(queue):
+        node = queue.pop()
+        if node:
+            node.key += offset
+            queue.append(node.left)
+            queue.append(node.right)
 
 
 def smallRotation(v):
@@ -147,7 +149,7 @@ root = None
 
 def insert(key, char):
     global root
-    # print('# insert', char, 'at', key)
+    DEBUG and print('# insert', char, 'at', key)
     new_vertex = Vertex(key, char, None, None, None)
     root = merge(root, new_vertex)
 
@@ -166,12 +168,12 @@ def first(node):
 
 def move(start, end, put_after):
     global root
-    # print('# move from', start, 'to', end, 'after', put_after)
+    DEBUG and print('# move from', start, 'to', end, 'after', put_after)
 
     left, middle = split(root, start)
     middle, right = split(middle, end + 1)
 
-    # print('Split into "%s"+"%s"+"%s"' % (printString(left), printString(middle), printString(right)))
+    DEBUG and print('# split into "%s"+"%s"+"%s"' % (printString(left), printString(middle), printString(right)))
 
     # вырезанный кусок
     length = end - start + 1
@@ -180,12 +182,12 @@ def move(start, end, put_after):
     shift(right, -length)
     left = merge(left, right)
 
-    # print('merged without "%s" : "%s"' % (printString(middle), printString(left)))
+    DEBUG and print('# merged without "%s" : "%s"' % (printString(middle), printString(left)))
 
     # место под вырезанный кусок
     left, right = split(left, put_after)
 
-    # print('split before insert: "%s" + "%s"' % (printString(left), printString(right)))
+    DEBUG and print('# split before insert: "%s" + "%s"' % (printString(left), printString(right)))
 
     # правую часть двигаем вправо, особождаем место
     shift(right, +length)
@@ -195,7 +197,7 @@ def move(start, end, put_after):
 
     # склеиваем
     root = merge(merge(left, middle), right)
-    # print('merged to', printString(root))
+    DEBUG and print('# merged to', printString(root))
 
 
 def apply_operation(line):
@@ -288,7 +290,6 @@ def test(string, operations, expected):
     global root
     root = None
     make_tree(string)
-    traverse()
     apply_operations(operations)
     result = printString(root)
     print('ok' if result == expected else 'wrong: expected %s instead of %s' % (expected, result))
@@ -310,6 +311,13 @@ def run():
 # test('hlelowrold', ['1 1 2', '6 6 7'], 'helloworld')
 # test('abcdef', ['2 4 3'], 'abfcde')
 # test('abcdef', ['0 1 1', '4 5 0'], 'efcabd')
+
+l = 300 * 1000
+s = 'abc' * int(l / 3)
+moveright = '0 ' + str(l - 2) + ' 1'
+moveleft = '1 ' + str(l - 1) + ' 0'
+operations = [moveleft, moveright] * 10
+test(s, operations, s)
 
 # interactive()
 
