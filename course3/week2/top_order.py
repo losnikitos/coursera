@@ -3,7 +3,7 @@
 
 class Graph:
     def __init__(self, n_vertices=0, edges=[]):
-        self.ordered = []
+        self.removed = []
         self.vertices = set(range(n_vertices))
         self.edges = [set() for _ in range(n_vertices)]
         for edge in edges:
@@ -21,43 +21,50 @@ class Graph:
 
         return self
 
-    def remove(self, node):
-        self.vertices.remove(node)
-        for edge in self.edges:
-            if node in edge:
-                edge.remove(node)
+    def is_sink(self, node):
+        for edge in self.edges[node]:
+            if edge not in self.removed:
+                return False
+        return True
 
     def visit(self, node):
-        if node not in self.vertices:
+        # self.depth += 1
+
+        # print('   ' * self.depth, 'visit', node)
+        if node in self.removed:
+            # self.depth -= 1
             return
 
         for neighbor in self.edges[node]:
             self.visit(neighbor)
 
         # post visit
-        if len(self.edges[node]) == 0:
-            self.remove(node)
-            self.ordered.insert(0, node)
+        if self.is_sink(node):
+            # print('   ' * self.depth, 'remove', node)
+            self.removed.insert(0, node)
+
+        # self.depth -= 1
 
     def top_order(self):
+        # self.depth = 0
         for v in self.vertices:
             self.visit(v)
-        return self.ordered
+        return list(map(lambda x: x+1, self.removed))
 
     def __str__(self):
         return '\n'.join(['%s: %s' % (v, self.edges[v]) for v in self.vertices])
 
 
 # TEST
-def test(g, answer):
-    res = g.top_order()
-    print('ok' if res == answer else 'wrong: expected %s instead of %s' % (answer, res))
+# def test(g, answer):
+#     res = g.top_order()
+#     print('ok' if res == answer else 'wrong: expected %s instead of %s' % (answer, res))
 
 
-test(Graph(4, [(1, 2), (4, 1), (3, 1)]), [4, 3, 1, 2])
-test(Graph(4, [(3, 1)]), [2, 3, 1, 4])
-test(Graph(5, [(2, 1), (3, 2), (3, 1), (4, 3), (4, 1), (5, 2), (5, 3)]), [5, 4, 3, 2, 1])
+# test(Graph(4, [(1, 2), (4, 1), (3, 1)]), [4, 3, 1, 2])
+# test(Graph(4, [(3, 1)]), [2, 3, 1, 4])
+# test(Graph(5, [(2, 1), (3, 2), (3, 1), (4, 3), (4, 1), (5, 2), (5, 3)]), [5, 4, 3, 2, 1])
 
 # RUN
 g = Graph().read()
-print(' '.join(g.top_order()))
+print(' '.join(map(str, g.top_order())))
