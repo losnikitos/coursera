@@ -21,44 +21,6 @@ class Graph:
 
         return self
 
-    # def explore(self, vertex, visited=[], preorder=None, postorder=None):
-    #     self.deep += 1
-    #     if vertex in visited:
-    #         self.deep -= 1
-    #         return
-    #
-    #     visited.append(vertex)
-    #
-    #     print('  ' * self.deep, 'at', vertex)
-    #
-    #     for neighbor in self.edges[vertex]:
-    #         print('  '*self.deep, 'neighbor', neighbor)
-    #         preorder(neighbor, visited) if preorder else 0
-    #         self.explore(neighbor, visited, preorder, postorder)
-    #         postorder(neighbor, visited) if postorder else 0
-    #
-    #     self.deep -= 1
-    #
-    # def dfs(self, preorder=None, postorder=None):
-    #     print(self)
-    #     visited = []
-    #     for node in range(self.num_vertices):
-    #         if node not in visited:
-    #             print('START', node)
-    #             self.explore(node, visited, preorder, postorder)
-    #
-    # def has_loops(self):
-    #     looped = []
-    #
-    #     def pre(node, visited):
-    #         print('  '*self.deep, 'visited %s, going to %s' % (visited, node))
-    #         if node in visited:
-    #             print('CYCLE!')
-    #             looped.append(node)
-    #
-    #     self.dfs(pre)
-    #     return len(looped) > 0
-
     def visit(self, vertex, visited=set(), path=set()):
         if vertex in visited:
             return False

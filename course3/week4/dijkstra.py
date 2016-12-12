@@ -19,14 +19,13 @@ class Graph:
             self.edges[a - 1].add((b - 1, w))
 
     def distance(self, fr, to):
-        dist = [inf for v in self.vertices]
-        prev = [None for v in self.vertices]
+        prev = []
+        dist = []
         unknown = {}
-        for i, v in enumerate(self.vertices):
-            unknown[i] = inf
-
-        dist[fr] = 0
-        unknown[fr] = 0
+        for v in self.vertices:
+            prev.append(None)
+            dist.append(inf if v != fr else 0)
+            unknown[v] = inf if v != fr else 0
 
         while len(unknown):
             nearest = min(unknown, key=unknown.get)
